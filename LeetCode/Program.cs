@@ -10,7 +10,10 @@ namespace LeetCode
     {
         static void Main(string[] args)
         {
-            int a = LengthOfLongestSubstring("dvdf");
+            int[] a = new int[3]{1,2,3};
+            int[] b = new int[3]{3,4,5};
+            Console.WriteLine(FindMedianSortedArrays(a, b));
+            Console.ReadKey();
         }
 
         #region 1-100
@@ -119,6 +122,78 @@ namespace LeetCode
                 max = ins.Count;
             }
             return max;
+        }
+        #endregion
+
+        #region 4
+        public static double FindMedianSortedArrays(int[] nums1, int[] nums2)
+        {
+            double result = 0;
+            int maxCount = nums1.Length + nums2.Length;
+            bool isEven = (maxCount / 2 * 2 == maxCount);
+            int cnt = maxCount/2;
+            int n1 = 0;
+            int n2 = 0;
+            int f1 = 1;
+            int f2 = 1;
+            for (int i = 0; i <= cnt; i++)
+            {
+                if (n1 <= nums1.Length - 1 && n2 <= nums2.Length - 1)
+                {
+                    if (nums1[n1] < nums2[n2])
+                    {
+                        f1 = f2;
+                        f2 = 1;
+                        n1++;
+                    }
+                    else
+                    {
+                        f1 = f2;
+                        f2 = 2;
+                        n2++;
+                    }
+                }
+                else if (n1 <= nums1.Length - 1)
+                {
+                    f1 = f2;
+                    f2 = 1;
+                    n1++;
+                }
+                else
+                {
+                    f1 = f2;
+                    f2 = 2;
+                    n2++;
+                }
+            }
+
+            if (isEven)
+            {
+                if (f1 == 1 && f2 == 1)
+                {
+                    result = (nums1[n1 - 1] + nums1[n1 - 2]) / 2.0;
+                }
+                else if (f1 == 2 && f2 == 2)
+                {
+                    result = (nums2[n2 - 1] + nums2[n2 - 2]) / 2.0;
+                }
+                else
+                {
+                    result = (nums1[n1 - 1] + nums2[n2 - 1]) / 2.0;
+                }
+            }
+            else
+            {
+                if (f2 == 1)
+                {
+                    result = nums1[n1-1];
+                }
+                else
+                {
+                    result = nums2[n2-1];
+                }
+            }
+            return result;
         }
         #endregion
         #endregion
